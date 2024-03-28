@@ -1,0 +1,255 @@
+Question 1) Q1. Define XMLHttpRequest object, and How is it used in AJAX?
+
+Solution 1) 
+
+
+The XMLHttpRequest (XHR) object is a JavaScript API provided by web browsers that is used to send requests to a server and receive responses.
+It is an essential part of the technology called AJAX (Asynchronous JavaScript and XML).
+
+The XMLHttpRequest object can be used to exchange data with a web server behind the scenes, allowing web pages to be updated asynchronously by 
+exchanging small amounts of data with the server. This means that it is possible to update parts of a web page, without reloading the whole page.
+
+Example
+
+var xhr = new XMLHttpRequest();
+xhr.open('GET', '/api/data.json', true);
+xhr.onload = function() {
+    if (xhr.status >= 200 && xhr.status < 300) {
+        var response = JSON.parse(xhr.responseText);
+        console.log(response);
+    } else {
+        console.error('The request failed!');
+    }
+};
+xhr.onerror = function() {
+    console.error('There was an error making the request.');
+};
+xhr.send();
+
+
+Question 2) Write a JavaScript program to make an AJAX request using the XMLHttpRequest object to fetch data
+from a remote API (https://jsonplaceholder.typicode.com/users) and log a list of user names from the
+response to the browser console and output.
+
+Answer 2)
+
+
+var xhr = new XMLHttpRequest();
+xhr.open('GET', 'https://jsonplaceholder.typicode.com/users', true);
+xhr.onload = function() {
+    if (xhr.status === 200) {
+        var users = JSON.parse(xhr.responseText);
+        console.log('User Names:');
+        users.forEach(function(user) {
+            console.log(user.name);
+        });
+    } else {
+        console.error('Failed to load data:', xhr.statusText);
+    }
+};
+xhr.onerror = function() {
+    console.error('Network error occurred while making the request.');
+};
+xhr.send();
+
+
+Question 3) What is the same-origin policy in the context of AJAX requests, and how can you work around it?
+
+Solution 3) The same-origin policy is a critical security measure enforced by web browsers. It restricts how a document or script loaded from one origin can interact with a resource from another origin. An origin is defined by the scheme (protocol), hostname (domain), and port of the URL used to access it. For AJAX requests, the same-origin policy ensures that scripts can only make requests to the same origin that served the web page.
+
+Impact on AJAX:
+Due to the same-origin policy, an AJAX request using XMLHttpRequest or fetch can only be made to URLs that have the same scheme, hostname, and port as the origin from which the page was served. This means that by default, a web page served from http://example.com cannot make AJAX requests to https://example.com (different scheme), http://sub.example.com (different subdomain), or http://example.com:8080 (different port).
+
+Workarounds:
+CORS (Cross-Origin Resource Sharing):
+
+CORS is a mechanism that allows many resources (e.g., fonts, JavaScript, etc.) on a web page to be requested from another domain outside the domain from which the resource originated.
+It's implemented through HTTP headers and requires the server to include specific headers that allow the browser to determine if and when cross-origin requests are permitted.
+To use CORS, the server hosting the resources must be configured to send the Access-Control-Allow-Origin header in its responses, often with a value that includes the requesting origin or a wildcard *.
+JSONP (JSON with Padding):
+
+JSONP is a method for sending JSON data without worrying about the same-origin policy. It works by using a <script> tag, which is exempt from the same-origin policy.
+The response from the server is wrapped in a function call, and the browser treats it as a script instead of an AJAX request.
+JSONP requires server support and can only be used for GET requests.
+Proxy Server:
+
+A proxy server on the same origin as the web page can relay requests to other origins. This server-side proxy makes the external requests and then serves the responses back to the client-side script.
+This method involves additional complexity and can introduce performance and maintenance issues, but it is a complete solution to the same-origin policy as the client is no longer directly involved in the cross-origin requests.
+PostMessage:
+
+The window.postMessage method safely enables cross-origin communication between Window objects (e.g., between a page and a pop-up that it spawned, or between a page and an iframe embedded within it).
+This mechanism can be used to perform cross-origin communication if the different origins agree on a messaging protocol.
+Server Configuration:
+
+For APIs and resources you control, configure your server to accept requests from different origins by setting CORS headers. This is the most direct method to allow cross-origin AJAX requests to your resources.
+Document.domain Property:
+
+If two pages have the same second-level domain, they can both set their document.domain property to the same value to enable communication between them, although this only works under specific conditions.
+WebSocket:
+
+WebSocket is a protocol that provides full-duplex communication channels over a single TCP connection. It is not subject to the same-origin policy; however, the server must be prepared to accept WebSocket connections.
+
+
+Question 4) Q4.Compare Promises to callbacks and discuss why Promises are preferred for managing asynchronous code.
+
+Solution 4)
+
+
+Callbacks and Promises are both used for managing asynchronous operations in JavaScript, but they have different features and usage patterns:
+
+Callbacks:
+A callback is a function that is passed into another function as an argument to be executed later. Callbacks are the traditional way to handle asynchronous operations in JavaScript.
+
+Example of a callback:
+
+function fetchData(callback) {
+    setTimeout(() => {
+        callback(null, 'Data received');
+    }, 1000);
+}
+
+fetchData((error, data) => {
+    if (error) {
+        console.error(error);
+    } else {
+        console.log(data);
+    }
+});
+
+Issues with callbacks:
+
+Callback Hell: Deeply nested callbacks, known as "callback hell" or "the pyramid of doom," can make the code hard to read and maintain.
+Error Handling: It can be difficult to handle errors properly, especially in complex situations with many asynchronous calls.
+Control Flow: Managing the sequence of asynchronous operations is not straightforward.
+Promises:
+A Promise is an object representing the eventual completion or failure of an asynchronous operation. Promises provide a cleaner and more robust way of handling asynchronous code.
+
+Example of a Promise:
+function fetchData() {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve('Data received');
+        }, 1000);
+    });
+}
+
+fetchData()
+    .then(data => console.log(data))
+    .catch(error => console.error(error));
+Advantages of Promises:
+
+Chaining: Promises can be chained, allowing for a flat structure and avoiding callback hell.
+Error Handling: They handle both synchronous and asynchronous errors with the same construct: .catch().
+Composition: Promises make it easier to manage complex sequences of asynchronous operations.
+Predictability: They follow a well-defined behavior of state transition, which can only occur once from "pending" to either "fulfilled" or "rejected."
+Why Promises are Preferred:
+Readability: Promises lead to better readability and organized code with .then() and .catch() for handling asynchronous results and errors.
+Error Propagation: Errors propagate down the chain until caught, mimicking synchronous try-catch behavior, which is not the case with nested callbacks.
+Control Flows: They allow easier control flow constructs for parallel and sequential execution of asynchronous tasks using Promise.all, Promise.race, async/await, etc.
+Standardization: Promises are part of the ECMAScript specification, which provides standard and interoperable error handling.
+async/await syntax, introduced in ES2017, further improves the asynchronous code readability and flow by allowing developers to write asynchronous code that looks and behaves a bit more like synchronous code, which can be less error-prone and easier to understand.
+
+Overall, while callbacks are still used, especially in scenarios involving simple asynchronous tasks or for Node.js API compatibility, Promises are generally preferred for managing asynchronous operations due to their advantages in handling complex operations, readability, and standardized error management.
+
+
+
+Question 5) List and briefly explain some common Browser APIs available to JavaScript developers.
+
+
+Solution 5) Browser APIs, also known as Web APIs, provide JavaScript developers with a variety of powerful tools. They enable interactions between JavaScript and the browser environment, allowing developers to create complex functionalities. Here are some common Browser APIs:
+
+Document Object Model (DOM) API:
+
+Allows manipulation of the webpage's structure, style, and content.
+Provides methods to access and modify HTML and style information.
+Fetch API:
+
+Provides a more modern and powerful way of performing network requests compared to XMLHttpRequest.
+Supports the Promise API for cleaner and more manageable asynchronous code.
+Canvas API:
+
+Enables drawing 2D graphics on a <canvas> element programmatically.
+Useful for creating games, graphs, and other visual images and animations.
+WebGL API:
+
+A JavaScript API that renders interactive 3D and 2D graphics within any compatible web browser without the use of plug-ins.
+Built on top of the OpenGL ES API, it provides a low-level graphics API.
+Geolocation API:
+
+Allows the user to provide their location to web applications if they give permission.
+Can be used for location-based services like maps and location-aware search.
+File API:
+
+Provides access to read the contents of files stored on the user's computer, using File and FileReader objects.
+Useful for applications that need to handle user-selected files, such as image upload and processing.
+History API:
+
+Provides control over the user's session history (the pages visited in the tab or frame that the current page is loaded in).
+Allows manipulation of the browser history through JavaScript.
+Web Storage API (localStorage and sessionStorage):
+
+Allows websites to store data in the browser in a key-value pair format.
+localStorage persists beyond browser sessions, whereas sessionStorage is cleared when the session ends.
+IndexedDB API:
+
+A low-level API for client-side storage of significant amounts of structured data, including files and blobs.
+Allows the creation of applications with no connectivity and data caching.
+Web Workers API:
+
+Runs scripts in the background independently of user interface scripts, allowing for thread-like operation and performing heavy tasks without affecting the UI.
+WebRTC API:
+
+Enables peer-to-peer communication between browsers for audio, video, and data transfer without the need for plugins.
+
+
+Question 6) Describe the purpose and usage of the localStorage and sessionStorage APIs in web development. Give suitable examples for each.
+
+
+Solution 6) 
+
+The localStorage and sessionStorage are part of the Web Storage API, which provides mechanisms by which browsers can store key/value pairs, in a much more intuitive fashion than using cookies.
+
+localStorage:
+Purpose:
+
+Provides a way to store data locally within a user's browser.
+The data has no expiration time and persists even after the browser is closed and reopened.
+Usage:
+
+Used for storing data that needs to persist across sessions, such as user preferences or theme settings.
+Because it's domain-specific, it's also secure; data stored in localStorage is only accessible by pages from the same origin.
+Example:
+
+localStorage.setItem('user', 'John Doe');
+const user = localStorage.getItem('user');
+console.log(user); // Outputs: John Doe
+localStorage.removeItem('user');
+localStorage.clear();
+
+
+sessionStorage:
+
+Purpose:
+
+Similar to localStorage, but with a shorter lifespan.
+Data stored in sessionStorage is cleared when the page session ends; when the user closes the specific tab or window.
+Usage:
+
+Ideal for sensitive data that shouldn't persist once the user ends the session.
+Can be used to store temporary data that should only be available for the duration of the site's visit (e.g., form data to preserve inputs during navigation).
+Example:
+
+sessionStorage.setItem('sessionUser', 'Jane Doe');
+const sessionUser = sessionStorage.getItem('sessionUser');
+console.log(sessionUser); // Outputs: Jane Doe
+sessionStorage.removeItem('sessionUser');
+sessionStorage.clear();
+
+
+Both localStorage and sessionStorage can be useful for different scenarios in web development. For instance, if you're creating a multi-step form where you want to temporarily store user inputs, sessionStorage is a great fit. On the other hand, localStorage is better suited for things like keeping a user logged in, storing user settings, or other data that should persist long-term.
+
+
+
+
+
+
