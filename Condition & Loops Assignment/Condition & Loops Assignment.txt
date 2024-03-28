@@ -1,0 +1,146 @@
+Question 1) Q1. What are conditional statements? Explain conditional statements with syntax and examples.
+
+Solution 1) Conditional statements are a feature of programming languages that allow the execution of certain pieces of code depending on whether a
+specified condition is true or false. They are a fundamental aspect of logic in programming, allowing for decision-making and branching paths.
+
+if Statement
+Checks a condition and executes a block of code if the condition is true.
+
+Example
+
+if (age >= 18) {
+    console.log('You are an adult.');
+} else {
+    console.log('You are a minor.');
+}
+
+
+if...else if...else Statement
+
+Allows for multiple conditions to be checked in sequence.
+
+Example:
+
+if (score > 90) {
+    console.log('Grade A');
+} else if (score > 75) {
+    console.log('Grade B');
+} else {
+    console.log('Grade C');
+}
+
+switch Statement
+Compares a value against multiple possible matches and executes the corresponding block of code.
+
+Example
+
+switch (dayOfWeek) {
+    case 0:
+        console.log('Sunday');
+        break;
+    case 1:
+        console.log('Monday');
+        break;
+    case 2:
+        console.log('Tuesday');
+        break;
+    default:
+        console.log('Some other day');
+}
+
+
+Question 3) What are loops, and what do we need them? Explain different types of loops with their syntax and
+examples.
+
+Solution 3)
+
+Loops in programming are used to repeat a block of code multiple times. They are fundamental to automating repetitive tasks, 
+iterating over collections of items, and processing data efficiently. The need for loops arises in scenarios where performing the same action 
+multiple times is necessary, making the code more concise, readable, and maintainable.
+
+Different Types of Loops:
+1. for Loop
+A for loop repeats a block of code a specified number of times. It's typically used when the number of iterations is known before the loop starts.
+
+Example:
+for (let i = 0; i < 5; i++) {
+    console.log(`Iteration number ${i}`);
+}
+2. while Loop
+A while loop continues to execute a block of code as long as the specified condition is true. 
+It's useful when the number of iterations is not known before the loop starts.
+Example:
+let i = 0;
+while (i < 5) {
+    console.log(`Iteration number ${i}`);
+    i++;
+}
+3. do...while Loop
+A do...while loop is similar to a while loop, except that the code block is executed at least once before the condition is tested.
+Example:
+let i = 0;
+do {
+    console.log(`Iteration number ${i}`);
+    i++;
+} while (i < 5);
+
+
+4. for...in Loop (JavaScript)
+The for...in loop is used to iterate over the properties of an object or the elements of an array.
+Example with an object:
+const person = { firstName: "John", lastName: "Doe" };
+for (let key in person) {
+    console.log(`${key}: ${person[key]}`);
+}
+
+
+5. for...of Loop (JavaScript)
+The for...of loop creates a loop iterating over iterable objects (including arrays, strings, maps, sets, etc.), allowing you to obtain the value of each item directly.
+Example with an array:
+const colors = ["red", "green", "blue"];
+for (let color of colors) {
+    console.log(color);
+}
+Loops are a powerful feature that enable developers to write efficient and concise code for operations that require repetition.
+Each type of loop has its specific use cases and choosing the right one depends on the particular requirements of the task at hand.
+
+
+Question 4)Q4. Generate n9mbers between any 2 given n9mbers.
+Ex
+8 onst num1 = 10
+8 onst num2 = 25;
+O9tp9t: 11, 12, 13, ...., 25
+
+Solution 4)
+
+function generateNumbers(num1, num2) {
+    for (let i = num1 + 1; i < num2; i++) {
+        console.log(i);
+    }
+}
+
+// Example usage:
+const num1 = 10;
+const num2 = 25;
+generateNumbers(num1, num2);
+
+
+Question 5) Use the while loop to print numbers from 1 to 25 in ascending and descending order.
+
+Solution 5) 
+
+// Printing numbers from 1 to 25 in ascending order
+let i = 1;
+console.log('Ascending order:');
+while (i <= 25) {
+    console.log(i);
+    i++;
+}
+
+// Printing numbers from 25 to 1 in descending order
+let j = 25;
+console.log('Descending order:');
+while (j >= 1) {
+    console.log(j);
+    j--;
+}
